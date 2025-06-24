@@ -1,0 +1,76 @@
+/* Стили для формы добавления игры */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.form-group label {
+    width: 10%
+}
+
+.form-group>.row {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+}
+
+.screenshot-btn,
+.attachment-btn,
+.financial-btn {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Медиа запросы для адаптивности */
+@media (max-width: 768px) {
+    .col-md-1 {
+        width: 25%;
+        float: left;
+        margin-bottom: 10px;
+    }
+}
