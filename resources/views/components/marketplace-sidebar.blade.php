@@ -7,24 +7,63 @@
 
     <div class="filter-group">
         <h4>Price</h4>
-        <div class="price-range-inputs" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <div class="price-input-min">
-                <label for="price_min">Min: <span id="priceMinValue">{{ request('price_min', 0) }}$</span></label>
-            </div>
-            <div class="price-input-max">
-                <label for="price_max">Max: <span id="priceMaxValue">{{ request('price_max', 10000) }}$</span></label>
-            </div>
+        <div class="range-slider-wrapper">
+            <div class="slider-track"></div>
+            <div class="slider-range-fill" id="price-range-fill"></div>
+            <input type="range" name="price_min" id="priceMinRange" min="0" max="10000" value="{{ request('price_min', 0) }}" class="thumb thumb-left">
+            <input type="range" name="price_max" id="priceMaxRange" min="0" max="10000" value="{{ request('price_max', 10000) }}" class="thumb thumb-right">
         </div>
-        <div class="range-slider-container" style="padding: 0 10px;">
-            <input type="range" name="price_min" min="0" max="10000" value="{{ request('price_min', 0) }}" class="slider" id="priceMinRange" style="width: 100%;">
-            <input type="range" name="price_max" min="0" max="10000" value="{{ request('price_max', 10000) }}" class="slider" id="priceMaxRange" style="width: 100%;">
+        <div class="range-values">
+            <span id="priceMinValue">${{ request('price_min', 0) }}</span>
+            <span id="priceMaxValue">${{ request('price_max', 10000) }}</span>
         </div>
-        <div class="checkbox-option" style="margin-top: 10px;">
+        <div class="checkbox-option" style="margin-top: 15px;">
             <input type="checkbox" name="hide_no_price" id="hideNoPrice" value="1" {{ request('hide_no_price') ? 'checked' : '' }}>
             <label for="hideNoPrice">Hide listings without price</label>
         </div>
     </div>
 
+    <div class="filter-group">
+        <h4>Last month earnings</h4>
+        <div class="range-slider-wrapper">
+            <div class="slider-track"></div>
+            <div class="slider-range-fill" id="earnings-range-fill"></div>
+            <input type="range" name="earnings_min" id="earningsMinRange" min="0" max="5000" value="{{ request('earnings_min', 0) }}" class="thumb thumb-left">
+            <input type="range" name="earnings_max" id="earningsMaxRange" min="0" max="5000" value="{{ request('earnings_max', 5000) }}" class="thumb thumb-right">
+        </div>
+        <div class="range-values">
+            <span id="earningsMinValue">${{ request('earnings_min', 0) }}</span>
+            <span id="earningsMaxValue">${{ request('earnings_max', 5000) }}</span>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <h4>Age (months)</h4>
+        <div class="range-slider-wrapper">
+            <div class="slider-track"></div>
+            <div class="slider-range-fill" id="age-range-fill"></div>
+            <input type="range" name="age_min" id="ageMinRange" min="0" max="120" value="{{ request('age_min', 0) }}" class="thumb thumb-left">
+            <input type="range" name="age_max" id="ageMaxRange" min="0" max="120" value="{{ request('age_max', 120) }}" class="thumb thumb-right">
+        </div>
+        <div class="range-values">
+            <span id="ageMinValue">{{ request('age_min', 0) }} months</span>
+            <span id="ageMaxValue">{{ request('age_max', 120) }} months</span>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <h4>Installs</h4>
+        <div class="range-slider-wrapper">
+            <div class="slider-track"></div>
+            <div class="slider-range-fill" id="installs-range-fill"></div>
+            <input type="range" name="installs_min" id="installsMinRange" min="0" max="1000000" step="100" value="{{ request('installs_min', 0) }}" class="thumb thumb-left">
+            <input type="range" name="installs_max" id="installsMaxRange" min="0" max="1000000" step="100" value="{{ request('installs_max', 1000000) }}" class="thumb thumb-right">
+        </div>
+        <div class="range-values">
+            <span id="installsMinValue">{{ number_format(request('installs_min', 0)) }}</span>
+            <span id="installsMaxValue">{{ number_format(request('installs_max', 1000000)) }}+</span>
+        </div>
+    </div>
 
     <div class="filter-group">
         <h4>Platform</h4>
@@ -47,39 +86,6 @@
     </div>
 
     <div class="filter-group">
-        <h4>Last month earnings</h4>
-        <div class="range-slider">
-            <input type="range" name="earnings_min" min="0" max="5000" value="{{ request('earnings_min', 0) }}" class="slider" id="monthEarningsRange">
-            <div class="range-values">
-                <span id="monthEarningsValue">{{ request('earnings_min', 0) }}$</span>
-                <span>5000$</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="filter-group">
-        <h4>Age (months)</h4>
-        <div class="range-slider">
-            <input type="range" name="age_min" min="0" max="120" value="{{ request('age_min', 0) }}" class="slider" id="ageRange">
-            <div class="range-values">
-                <span id="ageValue">{{ request('age_min', 0) }} months</span>
-                <span>10+ years</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="filter-group">
-        <h4>Installs</h4>
-        <div class="range-slider">
-            <input type="range" name="installs_min" min="0" max="1000000" step="100" value="{{ request('installs_min', 0) }}" class="slider" id="installsRange">
-            <div class="range-values">
-                <span id="installsValue">{{ request('installs_min', 0) }}</span>
-                <span>1M+</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="filter-group">
         <h4>Monetization</h4>
         @foreach(['ads', 'in-app-purchases', 'subscriptions', 'paid'] as $monetization)
         <div class="checkbox-option">
@@ -92,49 +98,170 @@
     <button type="submit" class="button green" style="width: 100%; margin-top: 20px;">Apply Filters</button>
 </form>
 
+<style>
+    .range-slider-wrapper {
+        position: relative;
+        height: 20px;
+        margin-bottom: 10px;
+    }
+    .slider-track, .slider-range-fill {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 4px;
+        border-radius: 2px;
+    }
+    .slider-track {
+        background-color: #ddd;
+        z-index: 1;
+    }
+    .slider-range-fill {
+        background-color: #00996f;
+        z-index: 2;
+    }
+    .thumb {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        pointer-events: none;
+    }
+    .thumb-left { z-index: 3; }
+    .thumb-right { z-index: 4; }
+
+    .thumb::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #00996f;
+        cursor: pointer;
+        pointer-events: all;
+        position: relative;
+    }
+    .thumb::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #00996f;
+        cursor: pointer;
+        pointer-events: all;
+        border: none;
+    }
+    .range-values {
+        display: flex;
+        justify-content: space-between;
+        color: #555;
+    }
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // --- Price Sliders ---
-    const priceMinSlider = document.getElementById('priceMinRange');
-    const priceMaxSlider = document.getElementById('priceMaxRange');
-    const priceMinValue = document.getElementById('priceMinValue');
-    const priceMaxValue = document.getElementById('priceMaxValue');
+    function createDualRangeSlider(config) {
+        const minRange = document.getElementById(config.minRangeId);
+        const maxRange = document.getElementById(config.maxRangeId);
+        const minValDisplay = document.getElementById(config.minValDisplayId);
+        const maxValDisplay = document.getElementById(config.maxValDisplayId);
+        const rangeFill = document.getElementById(config.rangeFillId);
 
-    function updatePriceSliders() {
-        let min = parseInt(priceMinSlider.value);
-        let max = parseInt(priceMaxSlider.value);
-
-        if (min > max) {
-            // Swap values if min is greater than max
-            let temp = min;
-            priceMinSlider.value = max;
-            priceMaxSlider.value = temp;
+        if (!minRange || !maxRange || !minValDisplay || !maxValDisplay || !rangeFill) {
+            return;
         }
 
-        priceMinValue.textContent = priceMinSlider.value + '$';
-        priceMaxValue.textContent = priceMaxSlider.value + '$';
-    }
+        const minVal = parseInt(minRange.min);
+        const maxVal = parseInt(minRange.max);
+        const range = maxVal - minVal;
+        const minGap = config.minGap || 0;
 
-    if (priceMinSlider && priceMaxSlider) {
-        priceMinSlider.addEventListener('input', updatePriceSliders);
-        priceMaxSlider.addEventListener('input', updatePriceSliders);
-        updatePriceSliders(); // Initial call
-    }
-
-    // --- Other Sliders ---
-    const otherSliders = {
-        'monthEarningsRange': { el: document.getElementById('monthEarningsRange'), val: document.getElementById('monthEarningsValue'), template: (v) => v + '$' },
-        'ageRange': { el: document.getElementById('ageRange'), val: document.getElementById('ageValue'), template: (v) => v + ' months' },
-        'installsRange': { el: document.getElementById('installsRange'), val: document.getElementById('installsValue'), template: (v) => v },
-    };
-
-    for (const id in otherSliders) {
-        const slider = otherSliders[id];
-        if (slider.el) {
-            const updateValue = () => slider.val.textContent = slider.template(slider.el.value);
-            updateValue();
-            slider.el.addEventListener('input', updateValue);
+        function updateSliderFill() {
+            const min = parseInt(minRange.value);
+            const max = parseInt(maxRange.value);
+            const minPercent = ((min - minVal) / range) * 100;
+            const maxPercent = ((max - minVal) / range) * 100;
+            rangeFill.style.left = `${minPercent}%`;
+            rangeFill.style.width = `${maxPercent - minPercent}%`;
         }
+
+        function syncMinRange() {
+            let minValue = parseInt(minRange.value);
+            let maxValue = parseInt(maxRange.value);
+            if (minValue > maxValue - minGap) {
+                minRange.value = maxValue - minGap;
+                minValue = maxValue - minGap;
+            }
+            minValDisplay.textContent = config.formatValue(minValue, 'min');
+            updateSliderFill();
+        }
+
+        function syncMaxRange() {
+            let minValue = parseInt(minRange.value);
+            let maxValue = parseInt(maxRange.value);
+            if (maxValue < minValue + minGap) {
+                maxRange.value = minValue + minGap;
+                maxValue = minValue + minGap;
+            }
+            maxValDisplay.textContent = config.formatValue(maxValue, 'max');
+            updateSliderFill();
+        }
+        
+        minRange.addEventListener('input', syncMinRange);
+        maxRange.addEventListener('input', syncMaxRange);
+
+        // Initial setup
+        updateSliderFill();
     }
+    
+    // --- Slider Configurations ---
+    createDualRangeSlider({
+        minRangeId: 'priceMinRange',
+        maxRangeId: 'priceMaxRange',
+        minValDisplayId: 'priceMinValue',
+        maxValDisplayId: 'priceMaxValue',
+        rangeFillId: 'price-range-fill',
+        minGap: 100,
+        formatValue: (value) => `$${value}`
+    });
+
+    createDualRangeSlider({
+        minRangeId: 'earningsMinRange',
+        maxRangeId: 'earningsMaxRange',
+        minValDisplayId: 'earningsMinValue',
+        maxValDisplayId: 'earningsMaxValue',
+        rangeFillId: 'earnings-range-fill',
+        minGap: 50,
+        formatValue: (value) => `$${value}`
+    });
+    
+    createDualRangeSlider({
+        minRangeId: 'ageMinRange',
+        maxRangeId: 'ageMaxRange',
+        minValDisplayId: 'ageMinValue',
+        maxValDisplayId: 'ageMaxValue',
+        rangeFillId: 'age-range-fill',
+        minGap: 1,
+        formatValue: (value) => `${value} months`
+    });
+
+    createDualRangeSlider({
+        minRangeId: 'installsMinRange',
+        maxRangeId: 'installsMaxRange',
+        minValDisplayId: 'installsMinValue',
+        maxValDisplayId: 'installsMaxValue',
+        rangeFillId: 'installs-range-fill',
+        minGap: 1000,
+        formatValue: (value, type) => {
+            const formatted = new Intl.NumberFormat().format(value);
+            return type === 'max' ? `${formatted}+` : formatted;
+        }
+    });
 });
 </script>

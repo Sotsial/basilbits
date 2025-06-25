@@ -45,20 +45,19 @@ class MarketplaceController extends Controller
         //     $query->whereIn('type', $request->type);
         // }
 
-        // Last month earnings filter
-        if ($request->filled('earnings_min')) {
-            $query->where('earnings', '>=', $request->earnings_min);
-        }
+        // if ($request->filled('earnings_min')) {
+        //     $query->where('earnings', '>=', $request->earnings_min);
+        // }
         
-        // Age filter
-        if ($request->filled('age_min')) {
-            $query->where('age', '>=', $request->age_min);
-        }
+        // // Age filter
+        // if ($request->filled('age_min')) {
+        //     $query->where('age', '>=', $request->age_min);
+        // }
 
-        // Installs filter
-        if ($request->filled('installs_min')) {
-            $query->where('installs', '>=', $request->installs_min);
-        }
+        // // Installs filter
+        // if ($request->filled('installs_min')) {
+        //     $query->where('installs', '>=', $request->installs_min);
+        // }
         
         // Monetization filter
         if ($request->filled('monetization')) {
