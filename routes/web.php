@@ -203,11 +203,9 @@ Route::prefix('admin')->middleware(['auth', 'can:admin'])->group(function () {
     // Другие админ-маршруты...
 });
 
-// Объединяем маршруты менеджера в один блок
 Route::middleware(['auth'])->group(function () {
     Route::get('/games/add', [GameController::class, 'create'])->name('games.add');
     Route::post('/games', [GameController::class, 'store'])->name('games.store');
-    // Другие маршруты для менеджеров...
 });
 Route::get('/games/{game:slug}', [GameController::class, 'show'])->name('app.detail');
 

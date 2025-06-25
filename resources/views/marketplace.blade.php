@@ -42,7 +42,7 @@
                     @endif
                 </div>
                  <div class="pagination-links" style="margin-top: 20px;">
-               {{ $games->appends(request()->query())->links() }}
+               {{ $games->links() }}
                 </div>
             </div>
         </div>
