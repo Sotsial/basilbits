@@ -59,7 +59,8 @@ class GameController extends Controller
             $game->fill($request->except(['title_image', 'screenshots', 'attachments', 'financials']));
             $game->user_id = auth()->id();
             $game->slug = Str::slug($request->title) . '-' . time();
-
+            $game->seller_id = $request->seller;
+            
             if ($request->hasFile('title_image')) {
                 $path = $request->file('title_image')->store('game_images', 'public');
                 $game->title_image = $path;
