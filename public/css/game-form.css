@@ -2,14 +2,15 @@
 .form-group {
     margin-bottom: 20px;
     display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
 .form-group label {
-    width: 10%
+    font-weight: 600;
 }
 
-.form-group>.row {
+.form-group > .row {
     display: flex;
     gap: 10px;
     flex-grow: 1;
@@ -19,27 +20,6 @@ h1 {
     font-size: 24px;
     margin-bottom: 25px;
     color: #333;
-}
-
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-}
-
-.screenshot-btn,
-.attachment-btn,
-.financial-btn {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 5px;
 }
 
 input[type="text"],
@@ -66,11 +46,102 @@ input[type="checkbox"] {
     margin-top: 10px;
 }
 
-/* Медиа запросы для адаптивности */
-@media (max-width: 768px) {
-    .col-md-1 {
-        width: 25%;
-        float: left;
-        margin-bottom: 10px;
-    }
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* --- Стили для загрузки файлов --- */
+
+/* Скрываем стандартный инпут файла */
+.file-upload-input {
+    display: none;
+}
+
+.file-upload-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Общий стиль для кастомных кнопок загрузки */
+.file-upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #8c8c8c;
+    color: white;
+    border: 2px solid #8c8c8c;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.file-upload-button:hover {
+    background-color: #7a7a7a;
+}
+
+/* Стиль для кнопки DOWNLOAD */
+.download-button {
+    width: 160px;
+    padding: 8px 20px;
+}
+
+/* Зеленый стиль при выборе файла для кнопки DOWNLOAD */
+.download-button.file-selected {
+    background-color: #00996f;
+    border-color: #00996f;
+}
+
+/* Контейнер для загрузки нескольких файлов */
+.multi-file-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.file-upload-wrapper {
+    position: relative;
+}
+
+/* Стиль для кнопок загрузки нескольких файлов (нумерованных) */
+.multi-file-button {
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    color: #333;
+}
+
+/* Красная звездочка для индикации выбранного файла */
+.file-selected-indicator {
+    color: red;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    display: none; /* Скрыта по умолчанию */
+}
+
+/* Показываем звездочку, когда файл выбран */
+.multi-file-button.file-selected .file-selected-indicator {
+    display: block;
+}
+
+/* Скрываем номер, когда показывается звездочка */
+.multi-file-button.file-selected .button-text {
+    display: none;
+}
+
+/* Отображение имени файла для главного изображения */
+.filename-display {
+    margin-left: 15px;
+    font-style: italic;
+    color: #555;
 }

@@ -52,27 +52,31 @@
             </div>
 
             <div class="form-group">
-                <label for="title_image">Title image*</label>
-                <div class="file-input-wrapper">
-                    <input type="text" readonly placeholder="app-logo.png" style="width: 150px;">
-                    <button type="button" class="btn btn-secondary btn-sm"
-                        onclick="document.getElementById('title_image').click()">Выберите файл</button>
-                    <input type="file" id="title_image" name="title_image" class="d-none">
+                <label>Title image*</label>
+                <div class="file-upload-container">
+                    {{-- ДОБАВЛЕНО: accept="image/*" --}}
+                    <input type="file" id="title_image" name="title_image" class="file-upload-input" onchange="updateSingleFileName(this)" required accept="image/*">
+                    <label for="title_image" class="file-upload-button download-button">DOWNLOAD</label>
+                    <span id="title-image-filename" class="filename-display"></span>
                 </div>
+                @error('title_image')<div class="error-message">{{ $message }}</div>@enderror
             </div>
 
-            <div class="form-group">
+             <div class="form-group">
                 <label>Screenshots</label>
-                <div class="screenshots-container">
-                    @for ($i = 1; $i <= 5; $i++) <div class="screenshot-item">
-                        <div class="number-label">{{ $i }}</div>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                            onclick="document.getElementById('screenshot_{{ $i }}').click()">Выберите файл</button>
-                        <span class="filename-display">Файл не выбран</span>
-                        <input type="file" name="screenshots[]" id="screenshot_{{ $i }}" class="d-none"
-                            onchange="updateFileName(this)">
+                <div class="multi-file-container">
+                    @for ($i = 1; $i <= 8; $i++)
+                        <div class="file-upload-wrapper">
+                             {{-- ДОБАВЛЕНО: accept="image/*" --}}
+                            <input type="file" name="screenshots[]" id="screenshot_{{ $i }}" class="file-upload-input" onchange="updateMultiFileButton(this)" accept="image/*">
+                            <label for="screenshot_{{ $i }}" class="file-upload-button multi-file-button">
+                                <span class="button-text">{{ $i }}</span>
+                                <span class="file-selected-indicator">*</span>
+                            </label>
+                        </div>
+                    @endfor
                 </div>
-                @endfor
+                @error('screenshots.*')<div class="error-message">{{ $message }}</div>@enderror
             </div>
             </div>
 
@@ -184,27 +188,37 @@
                 </div>
             </div>
 
-            <div class="form-group">
+           <div class="form-group">
                 <label>Attached Files</label>
-                <div class="">
-                    @for ($i = 1; $i <= 8; $i++) <div class="col-md-1">
-                        <button type="button" class="btn btn-secondary attachment-btn" data-id="{{ $i }}">{{ $i
-                            }}</button>
-                        <input type="file" name="attachments[]" id="attachment_{{ $i }}" class="d-none">
+                <div class="multi-file-container">
+                    @for ($i = 1; $i <= 8; $i++)
+                        <div class="file-upload-wrapper">
+                            <input type="file" name="attached_files[]" id="attached_file_{{ $i }}" class="file-upload-input" onchange="updateMultiFileButton(this)">
+                            <label for="attached_file_{{ $i }}" class="file-upload-button multi-file-button">
+                                <span class="button-text">{{ $i }}</span>
+                                <span class="file-selected-indicator">*</span>
+                            </label>
+                        </div>
+                    @endfor
                 </div>
-                @endfor
+                @error('attached_files.*')<div class="error-message">{{ $message }}</div>@enderror
             </div>
             </div>
 
-            <div class="form-group">
+           <div class="form-group">
                 <label>Financials</label>
-                <div class="">
-                    @for ($i = 1; $i <= 8; $i++) <div class="col-md-1">
-                        <button type="button" class="btn btn-secondary financial-btn" data-id="{{ $i }}">{{ $i
-                            }}</button>
-                        <input type="file" name="financials[]" id="financial_{{ $i }}" class="d-none">
+                <div class="multi-file-container">
+                    @for ($i = 1; $i <= 8; $i++)
+                        <div class="file-upload-wrapper">
+                            <input type="file" name="financials[]" id="financial_{{ $i }}" class="file-upload-input" onchange="updateMultiFileButton(this)">
+                            <label for="financial_{{ $i }}" class="file-upload-button multi-file-button">
+                                <span class="button-text">{{ $i }}</span>
+                                <span class="file-selected-indicator">*</span>
+                            </label>
+                        </div>
+                    @endfor
                 </div>
-                @endfor
+                @error('financials.*')<div class="error-message">{{ $message }}</div>@enderror
             </div>
             </div>
 
@@ -695,14 +709,30 @@
                 sellersList.innerHTML = '<div class="alert alert-danger">' + message + '</div>';
             }
         }
+
+        function updateSingleFileName(input) {
+            const fileNameDisplay = document.getElementById('title-image-filename');
+            const buttonLabel = input.nextElementSibling;
+            if (input.files && input.files.length > 0) {
+                fileNameDisplay.textContent = input.files[0].name;
+                buttonLabel.classList.add('file-selected');
+            } else {
+                fileNameDisplay.textContent = '';
+                buttonLabel.classList.remove('file-selected');
+            }
+        }
+
+        function updateMultiFileButton(input) {
+            const buttonLabel = input.nextElementSibling;
+            if (input.files && input.files.length > 0) {
+                buttonLabel.classList.add('file-selected');
+            } else {
+                buttonLabel.classList.remove('file-selected');
+            }
+        }
     </script>
 
-    <!-- Убедимся, что jQuery и Bootstrap загружены перед нашими скриптами -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+ 
 
     <style>
         .alert {
