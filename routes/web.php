@@ -209,6 +209,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/games', [GameController::class, 'store'])->name('games.store');
     // Другие маршруты для менеджеров...
 });
+Route::get('/games/{game:slug}', [GameController::class, 'show'])->name('app.detail');
 
 
 // API маршруты лучше переместить в api.php
