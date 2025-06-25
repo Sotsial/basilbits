@@ -20,9 +20,6 @@ class GameController extends Controller
 
     public function show(Game $game)
     {
-        // Laravel автоматически найдет игру по slug благодаря route-model binding
-        // Мы передаем найденный объект $game в представление 'app-detail'
-        // Важно: в представлении app-detail.blade.php переменная будет называться 'app'
         return view('app-detail', ['app' => $game]);
     }
     /**
@@ -112,6 +109,80 @@ class GameController extends Controller
         } catch (\Exception $e) {
             Log::error('Error adding game: ' . $e->getMessage());
             return back()->withInput()->with('error', 'Something went wrong. Please try again. Error: ' . $e->getMessage());
+        }
+    }
+
+    public function edit(Game $game)
+    {
+        $this->authorize('update', $game);
+
+        return view('edit-game', compact('game'));
+    }
+
+    public function update(Request $request, Game $game)
+    {
+        // Проверка прав пользователя
+        $this->authorize('update', $game);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'nullable|string|max:255',
+            'on_request' => 'nullable|boolean',
+            'title_image' => 'nullable|image|max:2048', 
+            'screenshots.*' => 'nullable|image|max:2048',
+            'platform' => 'required|in:ios,android',
+            'earnings' => 'required|string',
+            'age' => 'required|string',
+            'installs' => 'required|string',
+            'monetization' => 'nullable|array',
+            'attachments.*' => 'nullable|file|max:10240',
+            'financials.*' => 'nullable|file|max:10240',
+            'description' => 'required|string',
+            'link' => 'nullable|url',
+            'payment_methods' => 'nullable|array',
+            'seller' => 'nullable|exists:users,id',
+            'video_link' => 'nullable|url',
+            'specials' => 'nullable|array',
+        ]);
+
+        try {
+            $game->fill($request->except(['title_image', 'screenshots', 'attachments', 'financials']));
+            $game->slug = Str::slug($request->title) . '-' . $game->id; 
+
+            if ($request->hasFile('title_image')) {
+                if ($game->title_image) {
+                    Storage::disk('public')->delete($game->title_image);
+                }
+                $path = $request->file('title_image')->store('game_images', 'public');
+                $game->title_image = $path;
+            }
+
+
+            $game->save();
+
+            return redirect()->route('app.detail', $game->slug)->with('success', 'Game updated successfully!');
+
+        } catch (\Exception $e) {
+            Log::error('Error updating game: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
+
+     public function destroy(Game $game)
+    {
+        $this->authorize('delete', $game);
+
+        try {
+            if ($game->title_image) {
+                Storage::disk('public')->delete($game->title_image);
+            }
+
+            $game->delete();
+
+            return redirect()->route('marketplace')->with('success', 'Game deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error deleting game: ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
 }

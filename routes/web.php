@@ -206,7 +206,12 @@ Route::prefix('admin')->middleware(['auth', 'can:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/games/add', [GameController::class, 'create'])->name('games.add');
     Route::post('/games', [GameController::class, 'store'])->name('games.store');
+    
+    Route::get('/games/{game:slug}/edit', [GameController::class, 'edit'])->name('games.edit');
+    Route::put('/games/{game:slug}', [GameController::class, 'update'])->name('games.update');
+    Route::delete('/games/{game:slug}', [GameController::class, 'destroy'])->name('games.destroy');
 });
+
 Route::get('/games/{game:slug}', [GameController::class, 'show'])->name('app.detail');
 
 

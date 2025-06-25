@@ -300,7 +300,6 @@
     </x-popup>
 
     <script>
-        // Функция для отладки
         function debug(message, data = null) {
             const timestamp = new Date().toISOString().split('T')[1].substring(0, 12);
             if (data) {
@@ -310,11 +309,9 @@
             }
         }
 
-        // Инициализация формы
         document.addEventListener('DOMContentLoaded', function () {
             debug('Форма загружена, инициализация скриптов');
 
-            // Проверка наличия всех необходимых элементов
             const formElements = {
                 form: document.querySelector('form'),
                 titleInput: document.getElementById('title'),
@@ -323,20 +320,17 @@
                 submitButton: document.querySelector('button[type="submit"]')
             };
 
-            // Проверка наличия всех элементов формы
             for (const [key, element] of Object.entries(formElements)) {
                 if (!element) {
                     console.error(`Ошибка: Элемент ${key} не найден на странице`);
                 }
             }
 
-            // Проверка маршрута отправки формы
             if (formElements.form) {
                 debug(`Форма настроена на отправку по адресу: ${formElements.form.action}`);
             }
         });
 
-        // Функция для отображения имени выбранного файла
         function updateFileName(input) {
             debug('Выбор файла:', input.id);
             if (input.files && input.files[0]) {
@@ -344,7 +338,6 @@
                 if (label) {
                     label.textContent = input.files[0].name;
                     debug(`Файл выбран: ${input.files[0].name}, размер: ${input.files[0].size} байт`);
-                    // Визуальное подтверждение выбора файла
                     input.parentElement.classList.add('file-selected');
                 } else {
                     console.error('Элемент для отображения имени файла не найден');
@@ -352,7 +345,6 @@
             }
         }
 
-        // Обработка загрузки изображения заголовка
         document.getElementById('title_image')?.addEventListener('change', function () {
             debug('Загрузка изображения заголовка');
             if (this.files && this.files[0]) {
@@ -366,11 +358,8 @@
             }
         });
 
-        // При отправке формы показать индикатор загрузки и убедиться, что форма отправляется
         document.querySelector('form')?.addEventListener('submit', function (e) {
             debug('Попытка отправки формы');
-
-            // Собираем данные формы для отладки
             const formData = new FormData(this);
             const formDataObj = {};
             for (const [key, value] of formData.entries()) {
@@ -382,7 +371,6 @@
             }
             debug('Данные формы:', formDataObj);
 
-            // Предотвращаем отправку формы, если есть ошибки валидации
             if (!validateForm()) {
                 debug('Ошибка валидации формы, отправка отменена');
                 e.preventDefault();
@@ -398,7 +386,6 @@
 
             debug(`Форма отправляется на ${this.action} методом ${this.method}`);
 
-            // Добавим доп. отладку для обнаружения проблем с отправкой формы
             setTimeout(() => {
                 if (submitBtn.disabled) {
                     debug('Форма все еще в процессе отправки после 5 секунд');
@@ -408,12 +395,10 @@
             return true;
         });
 
-        // Простая валидация формы
         function validateForm() {
             debug('Валидация формы');
             let isValid = true;
 
-            // Проверяем обязательные поля
             const requiredFields = ['title', 'description'];
             for (const field of requiredFields) {
                 const element = document.getElementById(field);
@@ -424,7 +409,6 @@
                 }
             }
 
-            // Проверяем загрузку изображения
             const titleImageInput = document.getElementById('title_image');
             if (titleImageInput && (!titleImageInput.files || !titleImageInput.files[0])) {
                 showError('Необходимо загрузить изображение заголовка');
@@ -432,7 +416,6 @@
                 isValid = false;
             }
 
-            // Проверяем, выбрана ли платформа
             const platformSelected = document.querySelector('input[name="platform"]:checked');
             if (!platformSelected) {
                 showError('Выберите платформу');
@@ -440,7 +423,6 @@
                 isValid = false;
             }
 
-            // Проверяем другие обязательные селекторы
             const earningsSelected = document.querySelector('input[name="earnings"]:checked');
             if (!earningsSelected) {
                 showError('Укажите месячный доход');
@@ -468,22 +450,18 @@
 
         function showError(message) {
             debug(`Отображение ошибки: ${message}`);
-            // Создаем флеш-сообщение с ошибкой
             const errorContainer = document.createElement('div');
             errorContainer.className = 'alert alert-danger mt-3';
             errorContainer.textContent = message;
 
-            // Добавляем сообщение в начало формы
             const form = document.querySelector('form');
             if (form) {
                 form.insertAdjacentElement('afterbegin', errorContainer);
 
-                // Удаляем сообщение через 5 секунд
                 setTimeout(() => {
                     errorContainer.remove();
                 }, 5000);
 
-                // Прокручиваем к сообщению
                 errorContainer.scrollIntoView({ behavior: 'smooth' });
             } else {
                 console.error('Форма не найдена для отображения ошибки');
@@ -492,22 +470,18 @@
     </script>
 
     <script>
-        // События загрузки для диагностики
         window.addEventListener('load', function () {
             debug('Страница полностью загружена');
         });
 
-        // Отслеживание ошибок JS
         window.addEventListener('error', function (e) {
             console.error('JS ошибка:', e.error?.message || e.message, e.error?.stack || '');
         });
 
-        // Отслеживание отправки формы глобально
         window.addEventListener('submit', function (e) {
             debug(`Событие отправки формы на ${e.target.action}`, e);
         });
 
-        // Отслеживание запросов к серверу
         const originalFetch = window.fetch;
         window.fetch = function () {
             debug('Fetch запрос:', arguments);
