@@ -87,13 +87,13 @@
 
     <div class="filter-group">
         <h4>Monetization</h4>
-        @foreach(['ads', 'in-app-purchases', 'subscriptions', 'paid'] as $monetization)
+        @foreach(['ads' => 'Ads', 'in-app' => 'In-App', 'paid_app' => 'Paid App', 'cpa' => 'CPA', 'other' => 'Other'] as $value => $label)
         <div class="checkbox-option">
-            <input type="checkbox" name="monetization[]" value="{{ $monetization }}" id="{{ str_replace('-', '', $monetization) }}" {{ in_array($monetization, request('monetization', [])) ? 'checked' : '' }}>
-            <label for="{{ str_replace('-', '', $monetization) }}">{{ str_replace('-', ' ', ucfirst($monetization)) }}</label>
+            <input type="checkbox" name="monetization[]" value="{{ $value }}" id="{{ $value }}" {{ in_array($value, request('monetization', [])) ? 'checked' : '' }}>
+            <label for="{{ $value }}">{{ $label }}</label>
         </div>
         @endforeach
-    </div>
+    </div>  
 
     <button type="submit" class="button green" style="width: 100%; margin-top: 20px;">Apply Filters</button>
 </form>
