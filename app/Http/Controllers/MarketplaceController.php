@@ -14,7 +14,6 @@ class MarketplaceController extends Controller
     {
         $query = Game::query();
 
-        // Keyword search
         if ($request->filled('keyword')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->keyword . '%')
@@ -22,15 +21,14 @@ class MarketplaceController extends Controller
             });
         }
 
-        // Price filter (Min-Max Range)
-        // Применяем фильтр, только если значение было изменено пользователем
-        if ($request->filled('price_min') && $request->price_min > 0) {
-            $query->where('price', '>=', $request->price_min);
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', (float)$request->price_min);
         }
 
-        // Применяем фильтр, только если значение не является максимальным
-        if ($request->filled('price_max') && $request->price_max < 10000) {
-            $query->where('price', '<=', $request->price_max);
+        if ($request->filled('price_max')) {
+            if ($request->price_max < 10000) {
+                $query->where('price', '<=', (float)$request->price_max);
+            }
         }
 
         if ($request->has('hide_no_price')) {
@@ -43,9 +41,9 @@ class MarketplaceController extends Controller
         }
         
         // Type filter
-        if ($request->filled('type')) {
-            $query->whereIn('type', $request->type);
-        }
+        // if ($request->filled('type')) {
+        //     $query->whereIn('type', $request->type);
+        // }
 
         // Last month earnings filter
         if ($request->filled('earnings_min')) {
