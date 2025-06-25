@@ -25,8 +25,12 @@ Route::get('/services', function () {
     return view('services');
 });
 
-Route::get('/add', function () {
-    return view('add-game');
+Route::middleware(['auth'])->group(function () {
+    // Страница с формой добавления игры
+    Route::get('/add', [App\Http\Controllers\GameController::class, 'create'])->name('games.add');
+
+    // Обработка POST-запроса от формы
+    Route::post('/add', [App\Http\Controllers\GameController::class, 'store'])->name('games.store');
 });
 
 Route::get('/faq', function () {
@@ -200,11 +204,12 @@ Route::prefix('admin')->middleware(['auth', 'can:admin'])->group(function () {
 });
 
 // Объединяем маршруты менеджера в один блок
-Route::middleware(['auth', 'role:manager'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/games/add', [GameController::class, 'create'])->name('games.add');
     Route::post('/games', [GameController::class, 'store'])->name('games.store');
     // Другие маршруты для менеджеров...
 });
+
 
 // API маршруты лучше переместить в api.php
 // Но пока оставим их здесь, просто добавим префикс /api

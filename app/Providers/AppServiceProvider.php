@@ -14,16 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Зарегистрируем корректные привязки вместо отсутствующих классов
-        // Если у вас есть модель Role
-        $this->app->bind('role', function ($app) {
-            return new \App\Models\Role(); // Измените на ваш актуальный класс Role
-        });
-
-        // Если у вас есть класс Manager
-        $this->app->bind('manager', function ($app) {
-            return new \App\Models\Manager(); // Измените на ваш актуальный класс Manager
-        });
+   
     }
 
     /**
