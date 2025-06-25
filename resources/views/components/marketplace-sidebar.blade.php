@@ -1,4 +1,4 @@
-<form action="{{ route('marketplace') }}" method="GET">
+<form id="filter-form" action="{{ route('marketplace') }}" method="GET">
     <h3 class="underline">Filters:</h3>
 
     <div class="filter-group">
@@ -95,7 +95,7 @@
         @endforeach
     </div>  
 
-    <button type="submit" class="button green" style="width: 100%; margin-top: 20px;">Apply Filters</button>
+    <button type="button" id="reset-filters" class="button dark-green" style="width: 100%; margin-top: 10px; background-color: #6c757d;">Reset Filters</button>
 </form>
 
 <style>
@@ -166,6 +166,35 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const filterForm = document.getElementById('filter-form');
+    const allFilters = filterForm.querySelectorAll('input');
+    const resetBtn = document.getElementById('reset-filters');
+    
+    let submissionTimer;
+    const submissionDelay = 1000; // 1000ms = 1 секунда задержки для фильтрации
+
+    function scheduleSubmission() {
+        clearTimeout(submissionTimer);
+        
+        submissionTimer = setTimeout(() => {
+            filterForm.submit();
+        }, submissionDelay);
+    }
+
+
+    allFilters.forEach(filter => {
+        if (filter.type === 'checkbox') {
+            filter.addEventListener('change', scheduleSubmission);
+        } else {
+            filter.addEventListener('input', scheduleSubmission);
+        }
+    });
+    
+    resetBtn.addEventListener('click', function() {
+        window.location.href = "{{ route('marketplace') }}";
+    });
+
+
     function createDualRangeSlider(config) {
         const minRange = document.getElementById(config.minRangeId);
         const maxRange = document.getElementById(config.maxRangeId);
@@ -216,11 +245,9 @@ document.addEventListener('DOMContentLoaded', function () {
         minRange.addEventListener('input', syncMinRange);
         maxRange.addEventListener('input', syncMaxRange);
 
-        // Initial setup
         updateSliderFill();
     }
     
-    // --- Slider Configurations ---
     createDualRangeSlider({
         minRangeId: 'priceMinRange',
         maxRangeId: 'priceMaxRange',
