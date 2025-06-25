@@ -250,17 +250,13 @@
 
             <div class="form-group">
                 <label for="seller">Seller</label>
-                <div class="input-group seller-buttons">
-                    <input type="text" id="seller_display" class="form-control seller-input" readonly
-                        placeholder="Choose from the list">
-                    <div class="input-group-append">
-                        <button class="btn btn-link seller-btn" type="button" id="seller_select_btn">
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-                </div>
-                <input type="hidden" id="seller" name="seller">
-            </div>
+                <select id="seller" name="seller" class="form-control">
+                    <option value="">Choose a seller</option>
+                    @foreach($sellers as $seller)
+                        <option value="{{ $seller->id }}">{{ $seller->name }}</option>
+                    @endforeach
+                </select>
+            </div>  
 
             <div class="form-group">
                 <label for="video_link">Link to video</label>

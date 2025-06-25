@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\User; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +16,8 @@ class GameController extends Controller
      */
     public function create()
     {
-        return view('add-game');
+        $sellers = User::where('role', 'seller')->get();
+        return view('add-game', compact('sellers'));
     }
 
     public function show(Game $game)
@@ -53,13 +55,11 @@ class GameController extends Controller
         ]);
         
         try {
-            // 2. Создание новой игры
             $game = new Game();
             $game->fill($request->except(['title_image', 'screenshots', 'attachments', 'financials']));
             $game->user_id = auth()->id();
             $game->slug = Str::slug($request->title) . '-' . time();
 
-            // 3. Сохранение файлов
             if ($request->hasFile('title_image')) {
                 $path = $request->file('title_image')->store('game_images', 'public');
                 $game->title_image = $path;
@@ -121,7 +121,6 @@ class GameController extends Controller
 
     public function update(Request $request, Game $game)
     {
-        // Проверка прав пользователя
         $this->authorize('update', $game);
 
         $validated = $request->validate([
