@@ -4,7 +4,6 @@
     <section>
         <h1>Add a game</h1>
 
-        <!-- Заменяем alert-контейнер на стандартный дизайн как на скриншоте -->
         @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('error') }}
@@ -23,7 +22,6 @@
         </div>
         @endif
 
-        <!-- Отображение ошибок валидации стандартным способом Laravel -->
         @if ($errors->any())
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -33,7 +31,6 @@
         </div>
         @endif
 
-        <!-- Изменяем форму на обычный метод отправки без AJAX -->
         <form method="POST" action="{{ route('games.store') }}" enctype="multipart/form-data">
             @csrf
 
@@ -45,7 +42,7 @@
             <div class="form-group">
                 <label for="price">Price*</label>
                 <input type="text" id="price" name="price" class="form-control"
-                    style="width: 160px; display: inline-block;">
+                    style="width: 160px; display: inline-block;" required>
                 <label style="margin-left: 10px;">
                     <input type="checkbox" id="on_request" name="on_request"> On Request
                 </label>
@@ -84,7 +81,7 @@
                 <label>Platform*</label>
                 <div class="row">
                     <label style="margin-right: 20px;">
-                        <input type="radio" name="platform" value="ios"> iOS
+                        <input type="radio" name="platform" value="ios" required> iOS
                     </label>
                     <label>
                         <input type="radio" name="platform" value="android"> Android
@@ -96,7 +93,7 @@
                 <label>Last month earnings*</label>
                 <div class="row">
                     <label style="margin-right: 10px;">
-                        <input type="radio" name="earnings" value="unprofitable"> Unprofitable
+                        <input type="radio" name="earnings" value="unprofitable" required> Unprofitable
                     </label>
                     <label style="margin-right: 10px;">
                         <input type="radio" name="earnings" value="less_than_100$"> Less than 100$
@@ -120,7 +117,7 @@
                 <label>Age*</label>
                 <div class="row">
                     <label style="margin-right: 10px;">
-                        <input type="radio" name="age" value="less_than_1_month"> Less than 1 month
+                        <input type="radio" name="age" value="less_than_1_month" required> Less than 1 month
                     </label>
                     <label style="margin-right: 10px;">
                         <input type="radio" name="age" value="1-6_months"> 1-6 Months
@@ -144,7 +141,7 @@
                 <label>Installs*</label>
                 <div class="row">
                     <label style="margin-right: 10px;">
-                        <input type="radio" name="installs" value="less_than_100"> Less than 100
+                        <input type="radio" name="installs" value="less_than_100" required> Less than 100
                     </label>
                     <label style="margin-right: 10px;">
                         <input type="radio" name="installs" value="100-1000"> 100-1000
@@ -171,7 +168,7 @@
                 <label>Monetization*</label>
                 <div class="row">
                     <label style="margin-right: 10px;">
-                        <input type="checkbox" name="monetization[]" value="ads"> Ads
+                        <input type="checkbox" name="monetization[]" value="ads" required> Ads
                     </label>
                     <label style="margin-right: 10px;">
                         <input type="checkbox" name="monetization[]" value="in-app"> In-App
@@ -225,7 +222,7 @@
             <div class="form-group">
                 <label for="description">Description*</label>
                 <textarea id="description" name="description" class="form-control" rows="8"
-                    placeholder="Bold and links supported"></textarea>
+                    placeholder="Bold and links supported" required></textarea>
             </div>
 
             <div class="form-group">
@@ -286,11 +283,9 @@
         </form>
     </section>
 
-    <!-- Используем существующий компонент popup вместо прямого определения модального окна -->
     <x-popup id="sellerModal" title="Select a Seller">
         <input type="text" id="sellerSearch" class="form-control mb-3" placeholder="Search sellers...">
         <div id="sellersList" class="list-group">
-            <!-- Здесь будет список продавцов -->
             <div class="text-center py-3">
                 <div class="spinner-border text-primary" role="status">
                     <span class="sr-only">Loading...</span>
