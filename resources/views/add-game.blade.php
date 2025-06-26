@@ -81,7 +81,7 @@
                 <label>Platform*</label>
                 <div class="row">
                     <label style="margin-right: 20px;">
-                        <input type="radio" name="platform" value="ios" required> iOS
+                        <input type="radio" name="platform" value="ios"> iOS
                     </label>
                     <label>
                         <input type="radio" name="platform" value="android"> Android
@@ -168,7 +168,7 @@
                 <label>Monetization*</label>
                 <div class="row">
                     <label style="margin-right: 10px;">
-                        <input type="checkbox" name="monetization[]" value="ads" required> Ads
+                        <input type="checkbox" name="monetization[]" value="ads"> Ads
                     </label>
                     <label style="margin-right: 10px;">
                         <input type="checkbox" name="monetization[]" value="in-app"> In-App
