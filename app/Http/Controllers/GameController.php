@@ -30,8 +30,12 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+     public function store(Request $request)
     {
+        $request->merge([
+            'on_request' => $request->has('on_request'),
+        ]);
+
         // 1. Валидация входных данных
         $validated = $request->validate([
             'title' => 'required|string|max:255',
